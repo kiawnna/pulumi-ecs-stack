@@ -45,6 +45,7 @@ Step 5: Create a subdomain and point it at the loadbalancer and create an autosc
 https://www.loom.com/share/d1b3a1183d164396add699ecdf043e00
 
 # Stretch Goals
+
 Optional things you can do later with this project:
     -Parameterizing tokens
     -Moving to spotinst
