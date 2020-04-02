@@ -3,13 +3,6 @@ import * as aws from "@pulumi/aws";
 import * as awsx from "@pulumi/awsx";
 import {SSM} from 'aws-sdk';
 
-// Kia TODO
-// autoscale based on memory
-// domain name hosted zone and subdomain record sets
-// harden security groups
-// 
-//
-
 // INITIAL Create SSM Parameters for these values: ['/aiAPI/certArn', '/aiAPI/exampleEcrUrl']
 // '/aiAPI/certArn' should be a verified AWS Certificate Manager certificate, to enable HTTPS traffic through your load
 
