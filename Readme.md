@@ -1,6 +1,6 @@
-# Blackbird AI App
+# Secure ECS Service App stack with autoscaling and loadblanacing via Pulumi Platform
 
-This project will create a new app from a docker image using a user-provided ECRurl via AWS's ECS service.
+This project will crBeate a new app from a docker image using a user-provided ECRurl via AWS's ECS service.
 The app created will be automatically load-balanced and auto-scaled on EC2 instances. All
 underlying infrastructure, including a vpc, subnets, security groups, ECS clusters, load-balancers,
 autosclaing group for your EC2 instances, listeners, listerner rules and target groups, will be
