@@ -19,16 +19,16 @@ const ssmObject: ssmObjectParams = {
 };
 
 // INITIAL set domainName to your domain name that will be pointed at a load balancer
-const domainName = 'blackbirdai.kiastests.com'
+const domainName = 'YOUR-DOMAIN-NAME-HERE.COM'
 const priorityBase = 101
 
 // NEW_APP Copy a JSON object and give it new application-specific values
 const apps = [
     {
-        name: 'example-api',
-        healthCheckPath: '/analyze/healthcheck/',
-        port: '8080',
-        ecrUrl: '266245855374.dkr.ecr.us-west-2.amazonaws.com/blackbird',
+        name: 'YOUR-API-NAME-HERE',
+        healthCheckPath: '/YOURHEALTHCHECKPATH/HERE',
+        port: 'YOUR-PORT-HERE',
+        ecrUrl: 'your-ecr-url-here',
         desiredCount: 1
         
     }

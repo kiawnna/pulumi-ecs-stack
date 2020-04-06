@@ -1,6 +1,6 @@
-PULUMI_OWNER=kiawnna
-PULUMI_STACK_NAME=blackbird_ai_infrastructure
-PULUMI_ACCESS_TOKEN=pul-e80882d62d9220f1cb06c835eb90c7bf3a16f046
+PULUMI_OWNER=yournamehere
+PULUMI_STACK_NAME=yourstacknamehere
+PULUMI_ACCESS_TOKEN=youraccesstokenhere
 
 .ONESHELL:
 login:
