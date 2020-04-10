@@ -21,6 +21,7 @@ const ssmObject: ssmObjectParams = {
 // INITIAL set domainName to your domain name that will be pointed at a load balancer
 const domainName = 'YOUR-DOMAIN-NAME-HERE.COM'
 const priorityBase = 101
+const instanceType = 't2.medium'
 
 // NEW_APP Copy a JSON object and give it new application-specific values
 const apps = [
@@ -29,7 +30,7 @@ const apps = [
         healthCheckPath: '/YOURHEALTHCHECKPATH/HERE',
         port: 'YOUR-PORT-HERE',
         ecrUrl: 'your-ecr-url-here',
-        desiredCount: 1
+        desiredCountTasks: 1
         
     }
 ];
@@ -104,7 +105,7 @@ async function main() {
     const asg = cluster.createAutoScalingGroup("app", {
         templateParameters: {minSize: 1},
         launchConfigurationArgs: {
-            instanceType: "r5.2xlarge",
+            instanceType: instanceType,
             securityGroups: [ecsInstanceSecurityGroup.id, cluster.securityGroups[0].id]
         },
     });
@@ -173,7 +174,7 @@ async function main() {
                     }]
                 }
             },
-            desiredCount: x.desiredCount,
+            desiredCount: x.desiredCountTasks,
             loadBalancers: [{
                 containerPort: parseInt(x.port),
                 containerName: 'container',
