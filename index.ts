@@ -5,9 +5,10 @@ import {SSM} from 'aws-sdk';
 
 // INITIAL Create SSM Parameters for these values: ['/aiAPI/certArn', '/aiAPI/exampleEcrUrl']
 // '/aiAPI/certArn' should be a verified AWS Certificate Manager certificate, to enable HTTPS traffic through your load
+const region = 'us-west-2'
 
 const ssm = new SSM({
-    region: 'us-west-2'
+    region: region
 });
 
 interface ssmObjectParams {
@@ -22,8 +23,6 @@ const ssmObject: ssmObjectParams = {
 const domainName = 'YOUR-DOMAIN-NAME-HERE.COM'
 const instanceType = 't2.medium'
 const ebsVolumeSize = 100
-const containerMemory = 10240
-const containerCPU = 1280
 
 // NEW_APP Copy a JSON object and give it new application-specific values
 const apps = [
@@ -32,7 +31,9 @@ const apps = [
         healthCheckPath: '/YOURHEALTHCHECKPATH/HERE',
         port: 'YOUR-PORT-HERE',
         ecrUrl: 'your-ecr-url-here',
-        desiredCountTasks: 1
+        desiredCountTasks: 1,
+        containerMemory: 10240,
+        containerCPU: 1280
         
     },
     {
@@ -41,6 +42,8 @@ const apps = [
         port: 'YOUR-PORT-HERE',
         ecrUrl: 'your-ecr-url-here',
         desiredCountTasks: 1,
+        ccontainerMemory : 10240,
+        containerCPU: 1280
             
     }
 ];
@@ -178,8 +181,8 @@ async function main() {
                 networkMode: 'awsvpc',
                 container: {
                     image: x.ecrUrl,
-                    memory: containerMemory,
-                    cpu: containerCPU,
+                    memory: x.containerMemory,
+                    cpu: x.containerCPU,
                     portMappings: [{
                         containerPort: parseInt(x.port),
                         hostPort: parseInt(x.port)

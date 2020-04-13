@@ -29,7 +29,7 @@ Do all 5 steps the first time you set up an app.
 Only do Step 3 and the command `make deploy`.
 
 ### Step 1: Certificate and New Paramter
-- Create a certificate for your fomain and a new secure-string parameter for your these values '/aiAPI/certArn'.
+- Create a certificate for your fomain and a new standard-string parameter for the following value: '/aiAPI/certArn'.
 - '/aiAPI/certArn' should be a verified AWS Certificate Manager certificate, to enable HTTPS traffic through your
 load balancer.
 - Request a certificate and validate it through EMAIL or DNS. Once it is validated, copy the ARN of the
@@ -38,15 +38,13 @@ and capitalization is important). Paste the arn you copied into the value field 
 
 ### Step 2: New Pulumi Stack and Update makefile
 - Create a new Pulumi stack in the Pulumi dashboard.
-- Create a new acecss roken and copy it (you will only see it once) into the makefile.
-- Go to the makefile and copy the access token into the makefile. In the makefile, you also need ot update the
-Pulumi owner field and the stack name field to yourself and the name of the new stack you just created, respectively.
-get your access token and update your makefile
+- Create a new acecss token and copy it (you will only see it once) into the makefile.
+- You also need to update the Pulumi owner field and the stack name field to yourself and the name of the new stack
+you just created, respectively.
 
 ### Step 3: Update the index.ts file to have the correct values specific to your app
-- Go to the index.ts file and update the following fields: domainName, and all the values under const apps (name,
-healthCheckPath, port, ecrUrl, desiredCount). You can optionally update the region as well. It is currently set to us-west-2.
-Right now, the instanceType field lowerdown the file is set to: r5.2xlarge, so if you want a different instanceType, specify so.
+- Go to the index.ts file and update the following fields: domainName, region, instanceType, ebsVolumeSize, and all the
+parameters under the apps variable.
 
 ### Step 4: Run the following commands from your makefile, in the order listed:
 ```
