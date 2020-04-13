@@ -20,8 +20,10 @@ const ssmObject: ssmObjectParams = {
 
 // INITIAL set domainName to your domain name that will be pointed at a load balancer
 const domainName = 'YOUR-DOMAIN-NAME-HERE.COM'
-const priorityBase = 101
 const instanceType = 't2.medium'
+const ebsVolumeSize = 100
+const containerMemory = 10240
+const containerCPU = 1280
 
 // NEW_APP Copy a JSON object and give it new application-specific values
 const apps = [
@@ -32,6 +34,14 @@ const apps = [
         ecrUrl: 'your-ecr-url-here',
         desiredCountTasks: 1
         
+    },
+    {
+        name: 'second-api',
+        healthCheckPath: '/YOURHEALTHCHECKPATH/HERE',
+        port: 'YOUR-PORT-HERE',
+        ecrUrl: 'your-ecr-url-here',
+        desiredCountTasks: 1,
+            
     }
 ];
 
@@ -103,10 +113,15 @@ async function main() {
     });
 
     const asg = cluster.createAutoScalingGroup("app", {
-        templateParameters: {minSize: 1},
+        templateParameters: {
+            minSize: 1,
+            maxSize: 5,
+            desiredCapacity: 3
+        },
         launchConfigurationArgs: {
             instanceType: instanceType,
-            securityGroups: [ecsInstanceSecurityGroup.id, cluster.securityGroups[0].id]
+            securityGroups: [ecsInstanceSecurityGroup.id, cluster.securityGroups[0].id],
+            rootBlockDevice: {volumeSize: ebsVolumeSize}
         },
     });
 
@@ -138,8 +153,6 @@ async function main() {
     apps.forEach((x, i) => {
         let tg = alb.createTargetGroup(`${x.name}tg`, {protocol: 'HTTP', targetType: "ip", port: parseInt(x.port), healthCheck: {path: x.healthCheckPath, port: x.port}});
         
-        // console.log(tg.urn.get())
-        
         const listenerRule = new aws.lb.ListenerRule(`${x.name}listenerRule`, {
             actions: [{
                 targetGroupArn: tg.targetGroup.arn,
@@ -152,8 +165,7 @@ async function main() {
                     },
                 },
             ],
-            listenerArn: newlistener.listener.arn,
-            priority: priorityBase + (20 * i)
+            listenerArn: newlistener.listener.arn
         });
 
 
@@ -166,8 +178,8 @@ async function main() {
                 networkMode: 'awsvpc',
                 container: {
                     image: x.ecrUrl,
-                    memory: 10240,
-                    cpu: 1280,
+                    memory: containerMemory,
+                    cpu: containerCPU,
                     portMappings: [{
                         containerPort: parseInt(x.port),
                         hostPort: parseInt(x.port)
